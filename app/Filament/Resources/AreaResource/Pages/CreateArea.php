@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\AreaResource\Pages;
 
 use App\Filament\Resources\AreaResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\CreateRecord\Concerns\Translatable;
+use LaraZeus\SpatieTranslatable\Actions\LocaleSwitcher;
+use LaraZeus\SpatieTranslatable\Resources\Pages\CreateRecord\Concerns\Translatable;
 
 class CreateArea extends CreateRecord
 {
@@ -16,7 +16,7 @@ class CreateArea extends CreateRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\LocaleSwitcher::make(),
+            LocaleSwitcher::make(),
         ];
     }
 

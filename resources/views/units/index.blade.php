@@ -1,7 +1,7 @@
 <x-layouts.app :title="$pageTitle ?? __('All Units')">
     <!-- Page Header -->
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
                 {{ $pageTitle ?? __('All Units') }}
             </h1>
@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
             <!-- Sidebar Filters -->
             <aside class="lg:w-80 flex-shrink-0">

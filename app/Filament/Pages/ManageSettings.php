@@ -3,20 +3,28 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\Storage;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 
 class ManageSettings extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
-    protected static string $view = 'filament.pages.manage-settings';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
+
+    protected string $view = 'filament.pages.manage-settings';
+
     protected static ?int $navigationSort = 99;
 
     public ?array $data = [];
@@ -37,38 +45,39 @@ class ManageSettings extends Page implements HasForms
             'website_name_ar' => Setting::get('website_name')['ar'] ?? '',
             'website_name_en' => Setting::get('website_name')['en'] ?? '',
             'website_logo' => Setting::get('website_logo'),
-            'phone_numbers' => array_map(fn($p) => ['phone' => $p], Setting::getArray('phone_numbers')),
-            'emails' => array_map(fn($e) => ['email' => $e], Setting::getArray('emails')),
-            'whatsapp_numbers' => array_map(fn($w) => ['whatsapp' => $w], Setting::getArray('whatsapp_numbers')),
+            'phone_numbers' => array_map(fn ($p) => ['phone' => $p], Setting::getArray('phone_numbers')),
+            'emails' => array_map(fn ($e) => ['email' => $e], Setting::getArray('emails')),
+            'whatsapp_numbers' => array_map(fn ($w) => ['whatsapp' => $w], Setting::getArray('whatsapp_numbers')),
             'admin_email' => Setting::get('admin_email'),
             'facebook_url' => Setting::get('facebook_url'),
             'instagram_url' => Setting::get('instagram_url'),
             'twitter_url' => Setting::get('twitter_url'),
+            'currency' => Setting::get('currency', 'EGP'),
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make('Settings')
+        return $schema
+            ->components([
+                Tabs::make('Settings')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make(__('Branding'))
+                        Tab::make(__('Branding'))
                             ->icon('heroicon-o-paint-brush')
                             ->schema([
-                                Forms\Components\Section::make(__('Website Identity'))
+                                Section::make(__('Website Identity'))
                                     ->schema([
-                                        Forms\Components\TextInput::make('website_name_ar')
+                                        TextInput::make('website_name_ar')
                                             ->label(__('Website Name (Arabic)'))
                                             ->required()
                                             ->maxLength(255),
 
-                                        Forms\Components\TextInput::make('website_name_en')
+                                        TextInput::make('website_name_en')
                                             ->label(__('Website Name (English)'))
                                             ->required()
                                             ->maxLength(255),
 
-                                        Forms\Components\FileUpload::make('website_logo')
+                                        FileUpload::make('website_logo')
                                             ->label(__('Website Logo'))
                                             ->image()
                                             ->directory('settings')
@@ -76,19 +85,29 @@ class ManageSettings extends Page implements HasForms
                                             ->imageResizeMode('contain')
                                             ->imageCropAspectRatio(null)
                                             ->maxSize(2048),
+
+                                        Select::make('currency')
+                                            ->label(__('Currency'))
+                                            ->options([
+                                                'EGP' => 'ج.م (EGP)',
+                                                'SAR' => 'ر.س (SAR)',
+                                                'USD' => '$ (USD)',
+                                            ])
+                                            ->default('EGP')
+                                            ->required(),
                                     ])
                                     ->columns(2),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make(__('Contact Information'))
+                        Tab::make(__('Contact Information'))
                             ->icon('heroicon-o-phone')
                             ->schema([
-                                Forms\Components\Section::make(__('Phone Numbers'))
+                                Section::make(__('Phone Numbers'))
                                     ->schema([
-                                        Forms\Components\Repeater::make('phone_numbers')
+                                        Repeater::make('phone_numbers')
                                             ->label('')
                                             ->schema([
-                                                Forms\Components\TextInput::make('phone')
+                                                TextInput::make('phone')
                                                     ->label(__('Phone Number'))
                                                     ->tel()
                                                     ->required(),
@@ -99,12 +118,12 @@ class ManageSettings extends Page implements HasForms
                                             ->collapsible(),
                                     ]),
 
-                                Forms\Components\Section::make(__('Email Addresses'))
+                                Section::make(__('Email Addresses'))
                                     ->schema([
-                                        Forms\Components\Repeater::make('emails')
+                                        Repeater::make('emails')
                                             ->label('')
                                             ->schema([
-                                                Forms\Components\TextInput::make('email')
+                                                TextInput::make('email')
                                                     ->label(__('Email Address'))
                                                     ->email()
                                                     ->required(),
@@ -115,12 +134,12 @@ class ManageSettings extends Page implements HasForms
                                             ->collapsible(),
                                     ]),
 
-                                Forms\Components\Section::make(__('WhatsApp Numbers'))
+                                Section::make(__('WhatsApp Numbers'))
                                     ->schema([
-                                        Forms\Components\Repeater::make('whatsapp_numbers')
+                                        Repeater::make('whatsapp_numbers')
                                             ->label('')
                                             ->schema([
-                                                Forms\Components\TextInput::make('whatsapp')
+                                                TextInput::make('whatsapp')
                                                     ->label(__('WhatsApp Number'))
                                                     ->tel()
                                                     ->required(),
@@ -132,12 +151,12 @@ class ManageSettings extends Page implements HasForms
                                     ]),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make(__('Admin Settings'))
+                        Tab::make(__('Admin Settings'))
                             ->icon('heroicon-o-shield-check')
                             ->schema([
-                                Forms\Components\Section::make(__('Notifications'))
+                                Section::make(__('Notifications'))
                                     ->schema([
-                                        Forms\Components\TextInput::make('admin_email')
+                                        TextInput::make('admin_email')
                                             ->label(__('Admin Email'))
                                             ->helperText(__('Email address to receive inquiry notifications'))
                                             ->email()
@@ -145,22 +164,22 @@ class ManageSettings extends Page implements HasForms
                                     ]),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make(__('Social Media'))
+                        Tab::make(__('Social Media'))
                             ->icon('heroicon-o-share')
                             ->schema([
-                                Forms\Components\Section::make(__('Social Links'))
+                                Section::make(__('Social Links'))
                                     ->schema([
-                                        Forms\Components\TextInput::make('facebook_url')
+                                        TextInput::make('facebook_url')
                                             ->label(__('Facebook URL'))
                                             ->url()
                                             ->prefix('https://'),
 
-                                        Forms\Components\TextInput::make('instagram_url')
+                                        TextInput::make('instagram_url')
                                             ->label(__('Instagram URL'))
                                             ->url()
                                             ->prefix('https://'),
 
-                                        Forms\Components\TextInput::make('twitter_url')
+                                        TextInput::make('twitter_url')
                                             ->label(__('Twitter/X URL'))
                                             ->url()
                                             ->prefix('https://'),
@@ -187,15 +206,15 @@ class ManageSettings extends Page implements HasForms
         Setting::set('website_logo', $data['website_logo'], 'file');
 
         // Save phone numbers as array
-        $phones = array_map(fn($item) => $item['phone'], $data['phone_numbers'] ?? []);
+        $phones = array_map(fn ($item) => $item['phone'], $data['phone_numbers'] ?? []);
         Setting::set('phone_numbers', $phones, 'array');
 
         // Save emails as array
-        $emails = array_map(fn($item) => $item['email'], $data['emails'] ?? []);
+        $emails = array_map(fn ($item) => $item['email'], $data['emails'] ?? []);
         Setting::set('emails', $emails, 'array');
 
         // Save WhatsApp numbers as array
-        $whatsapps = array_map(fn($item) => $item['whatsapp'], $data['whatsapp_numbers'] ?? []);
+        $whatsapps = array_map(fn ($item) => $item['whatsapp'], $data['whatsapp_numbers'] ?? []);
         Setting::set('whatsapp_numbers', $whatsapps, 'array');
 
         // Save admin email
@@ -206,6 +225,9 @@ class ManageSettings extends Page implements HasForms
         Setting::set('instagram_url', $data['instagram_url']);
         Setting::set('twitter_url', $data['twitter_url']);
 
+        // Save currency
+        Setting::set('currency', $data['currency']);
+
         Notification::make()
             ->title(__('Settings saved successfully'))
             ->success()
@@ -215,7 +237,7 @@ class ManageSettings extends Page implements HasForms
     protected function getFormActions(): array
     {
         return [
-            Forms\Components\Actions\Action::make('save')
+            Action::make('save')
                 ->label(__('Save Settings'))
                 ->submit('save'),
         ];

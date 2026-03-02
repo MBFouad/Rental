@@ -6,9 +6,9 @@ use App\Filament\Resources\UnitResource;
 use App\Models\ConstructionDetail;
 use App\Models\RentalDetail;
 use App\Models\SaleDetail;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\CreateRecord\Concerns\Translatable;
+use LaraZeus\SpatieTranslatable\Actions\LocaleSwitcher;
+use LaraZeus\SpatieTranslatable\Resources\Pages\CreateRecord\Concerns\Translatable;
 
 class CreateUnit extends CreateRecord
 {
@@ -19,7 +19,7 @@ class CreateUnit extends CreateRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\LocaleSwitcher::make(),
+            LocaleSwitcher::make(),
         ];
     }
 

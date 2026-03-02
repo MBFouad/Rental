@@ -3,9 +3,10 @@
 namespace App\Filament\Resources\UnitResource\Pages;
 
 use App\Filament\Resources\UnitResource;
-use Filament\Actions;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Resources\Pages\ViewRecord\Concerns\Translatable;
+use LaraZeus\SpatieTranslatable\Actions\LocaleSwitcher;
+use LaraZeus\SpatieTranslatable\Resources\Pages\ViewRecord\Concerns\Translatable;
 
 class ViewUnit extends ViewRecord
 {
@@ -16,8 +17,8 @@ class ViewUnit extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\LocaleSwitcher::make(),
-            Actions\EditAction::make(),
+            LocaleSwitcher::make(),
+            EditAction::make(),
         ];
     }
 

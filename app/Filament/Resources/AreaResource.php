@@ -2,16 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AreaResource\Pages;
+use App\Filament\Resources\AreaResource\Pages\CreateArea;
+use App\Filament\Resources\AreaResource\Pages\EditArea;
+use App\Filament\Resources\AreaResource\Pages\ListAreas;
 use App\Models\Area;
 use App\Models\City;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Concerns\Translatable;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use LaraZeus\SpatieTranslatable\Resources\Concerns\Translatable;
 
 class AreaResource extends Resource
 {
@@ -19,9 +32,12 @@ class AreaResource extends Resource
 
     protected static ?string $model = Area::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map-pin';
 
-    protected static ?string $navigationGroup = 'Locations';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Locations');
+    }
 
     protected static ?int $navigationSort = 3;
 
@@ -40,40 +56,40 @@ class AreaResource extends Resource
         return __('Areas');
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
-                        Forms\Components\Select::make('city_id')
+                        Select::make('city_id')
                             ->label(__('City'))
                             ->options(City::active()->ordered()->pluck('name', 'id'))
                             ->required()
                             ->searchable(),
 
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->label(__('Name'))
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(function ($state, Forms\Set $set, $context) {
+                            ->afterStateUpdated(function ($state, Set $set, $context) {
                                 if ($context === 'create') {
                                     $set('slug', Str::slug($state));
                                 }
                             }),
 
-                        Forms\Components\TextInput::make('slug')
+                        TextInput::make('slug')
                             ->label(__('Slug'))
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
 
-                        Forms\Components\Toggle::make('is_active')
+                        Toggle::make('is_active')
                             ->label(__('Active'))
                             ->default(true),
 
-                        Forms\Components\TextInput::make('sort_order')
+                        TextInput::make('sort_order')
                             ->label(__('Sort Order'))
                             ->numeric()
                             ->default(0),
@@ -86,50 +102,50 @@ class AreaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('city.name')
+                TextColumn::make('city.name')
                     ->label(__('City'))
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('slug')
+                TextColumn::make('slug')
                     ->label(__('Slug'))
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextColumn::make('units_count')
+                TextColumn::make('units_count')
                     ->label(__('Units'))
                     ->counts('units')
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->label(__('Active'))
                     ->boolean(),
 
-                Tables\Columns\TextColumn::make('sort_order')
+                TextColumn::make('sort_order')
                     ->label(__('Order'))
                     ->sortable(),
             ])
             ->defaultSort('sort_order')
             ->filters([
-                Tables\Filters\SelectFilter::make('city_id')
+                SelectFilter::make('city_id')
                     ->label(__('City'))
                     ->options(City::pluck('name', 'id')),
 
-                Tables\Filters\TernaryFilter::make('is_active')
+                TernaryFilter::make('is_active')
                     ->label(__('Active')),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -142,9 +158,9 @@ class AreaResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAreas::route('/'),
-            'create' => Pages\CreateArea::route('/create'),
-            'edit' => Pages\EditArea::route('/{record}/edit'),
+            'index' => ListAreas::route('/'),
+            'create' => CreateArea::route('/create'),
+            'edit' => EditArea::route('/{record}/edit'),
         ];
     }
 }

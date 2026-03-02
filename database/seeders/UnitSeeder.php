@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
+use App\Models\City;
 use App\Models\ConstructionDetail;
 use App\Models\PaymentPlan;
 use App\Models\RentalDetail;
@@ -12,14 +14,40 @@ use Illuminate\Support\Str;
 
 class UnitSeeder extends Seeder
 {
+    /**
+     * Available property images for seeding.
+     */
+    protected array $propertyImages = [
+        'apartment-1.jpg',
+        'apartment-2.jpg',
+        'villa-1.jpg',
+        'villa-2.jpg',
+        'house-1.jpg',
+        'house-2.jpg',
+        'interior-1.jpg',
+        'interior-2.jpg',
+        'luxury-1.jpg',
+        'luxury-2.jpg',
+    ];
+
     public function run(): void
     {
+        // Get cities and areas for assignment
+        $cairo = City::where('slug', 'cairo')->first();
+        $alexandria = City::where('slug', 'alexandria')->first();
+        $newCairo = Area::where('slug', 'new-cairo')->first();
+        $smouha = Area::where('slug', 'smouha')->first();
+        $fifthSettlement = Area::where('slug', 'fifth-settlement')->first();
+        $sheikhZayed = Area::where('slug', 'sheikh-zayed')->first();
+
         // Rental Units
         $rentalUnits = [
             [
-                'title' => ['ar' => 'شقة فاخرة في الرياض', 'en' => 'Luxury Apartment in Riyadh'],
+                'title' => ['ar' => 'شقة فاخرة في القاهرة', 'en' => 'Luxury Apartment in Cairo'],
                 'description' => ['ar' => 'شقة فاخرة مع إطلالة رائعة على المدينة', 'en' => 'Luxury apartment with amazing city view'],
-                'location' => ['ar' => 'الرياض، حي النخيل', 'en' => 'Riyadh, Al Nakheel District'],
+                'location' => ['ar' => 'القاهرة الجديدة', 'en' => 'New Cairo'],
+                'city_id' => $cairo?->id,
+                'area_id' => $newCairo?->id,
                 'bedrooms' => 3,
                 'bathrooms' => 2,
                 'area' => 180,
@@ -29,7 +57,9 @@ class UnitSeeder extends Seeder
             [
                 'title' => ['ar' => 'استوديو عصري', 'en' => 'Modern Studio'],
                 'description' => ['ar' => 'استوديو عصري مفروش بالكامل', 'en' => 'Fully furnished modern studio'],
-                'location' => ['ar' => 'جدة، حي الروضة', 'en' => 'Jeddah, Al Rawdah District'],
+                'location' => ['ar' => 'سموحة، الإسكندرية', 'en' => 'Smouha, Alexandria'],
+                'city_id' => $alexandria?->id,
+                'area_id' => $smouha?->id,
                 'bedrooms' => 1,
                 'bathrooms' => 1,
                 'area' => 60,
@@ -44,6 +74,8 @@ class UnitSeeder extends Seeder
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'location' => $data['location'],
+                'city_id' => $data['city_id'],
+                'area_id' => $data['area_id'],
                 'slug' => Str::slug($data['title']['en']),
                 'status' => 'available',
                 'bedrooms' => $data['bedrooms'],
@@ -57,6 +89,8 @@ class UnitSeeder extends Seeder
                 'monthly_rent' => $data['monthly_rent'],
                 'insurance_amount' => $data['insurance_amount'],
             ]);
+
+            $this->attachRandomImages($unit);
         }
 
         // Sale Units
@@ -64,7 +98,9 @@ class UnitSeeder extends Seeder
             [
                 'title' => ['ar' => 'فيلا راقية', 'en' => 'Elegant Villa'],
                 'description' => ['ar' => 'فيلا راقية مع حديقة خاصة ومسبح', 'en' => 'Elegant villa with private garden and pool'],
-                'location' => ['ar' => 'الدمام، حي الفيصلية', 'en' => 'Dammam, Al Faisaliah District'],
+                'location' => ['ar' => 'التجمع الخامس', 'en' => 'Fifth Settlement'],
+                'city_id' => $cairo?->id,
+                'area_id' => $fifthSettlement?->id,
                 'bedrooms' => 5,
                 'bathrooms' => 4,
                 'area' => 450,
@@ -74,7 +110,9 @@ class UnitSeeder extends Seeder
             [
                 'title' => ['ar' => 'شقة دوبلكس', 'en' => 'Duplex Apartment'],
                 'description' => ['ar' => 'شقة دوبلكس واسعة بتشطيب فاخر', 'en' => 'Spacious duplex apartment with luxury finishing'],
-                'location' => ['ar' => 'الخبر، حي اللؤلؤ', 'en' => 'Khobar, Pearl District'],
+                'location' => ['ar' => 'الشيخ زايد', 'en' => 'Sheikh Zayed'],
+                'city_id' => $cairo?->id,
+                'area_id' => $sheikhZayed?->id,
                 'bedrooms' => 4,
                 'bathrooms' => 3,
                 'area' => 280,
@@ -89,6 +127,8 @@ class UnitSeeder extends Seeder
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'location' => $data['location'],
+                'city_id' => $data['city_id'],
+                'area_id' => $data['area_id'],
                 'slug' => Str::slug($data['title']['en']),
                 'status' => 'available',
                 'bedrooms' => $data['bedrooms'],
@@ -102,6 +142,8 @@ class UnitSeeder extends Seeder
                 'sale_price' => $data['sale_price'],
                 'is_negotiable' => $data['is_negotiable'],
             ]);
+
+            $this->attachRandomImages($unit);
         }
 
         // Under Construction Units
@@ -109,7 +151,9 @@ class UnitSeeder extends Seeder
             [
                 'title' => ['ar' => 'مشروع برج السماء', 'en' => 'Sky Tower Project'],
                 'description' => ['ar' => 'وحدات سكنية فاخرة في برج السماء', 'en' => 'Luxury residential units in Sky Tower'],
-                'location' => ['ar' => 'الرياض، طريق الملك فهد', 'en' => 'Riyadh, King Fahd Road'],
+                'location' => ['ar' => 'القاهرة الجديدة', 'en' => 'New Cairo'],
+                'city_id' => $cairo?->id,
+                'area_id' => $newCairo?->id,
                 'bedrooms' => 3,
                 'bathrooms' => 2,
                 'area' => 200,
@@ -131,6 +175,8 @@ class UnitSeeder extends Seeder
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'location' => $data['location'],
+                'city_id' => $data['city_id'],
+                'area_id' => $data['area_id'],
                 'slug' => Str::slug($data['title']['en']),
                 'status' => 'available',
                 'bedrooms' => $data['bedrooms'],
@@ -153,6 +199,34 @@ class UnitSeeder extends Seeder
                     'duration_years' => $plan['duration_years'],
                     'monthly_installment' => $plan['monthly_installment'],
                 ]);
+            }
+
+            $this->attachRandomImages($unit);
+        }
+    }
+
+    /**
+     * Attach random images to a unit.
+     */
+    protected function attachRandomImages(Unit $unit, int $min = 2, int $max = 4): void
+    {
+        $imagesPath = public_path('images/properties');
+
+        if (! is_dir($imagesPath)) {
+            return;
+        }
+
+        $numberOfImages = rand($min, $max);
+        $selectedImages = collect($this->propertyImages)
+            ->shuffle()
+            ->take($numberOfImages);
+
+        foreach ($selectedImages as $image) {
+            $imagePath = $imagesPath.'/'.$image;
+
+            if (file_exists($imagePath)) {
+                $unit->copyMedia($imagePath)
+                    ->toMediaCollection('images');
             }
         }
     }

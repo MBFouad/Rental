@@ -32,7 +32,7 @@
                                          x-transition:enter="transition ease-out duration-300"
                                          x-transition:enter-start="opacity-0"
                                          x-transition:enter-end="opacity-100"
-                                         src="{{ $image->getUrl() }}"
+                                         src="{{ $image->getUrl('banner') }}"
                                          alt="{{ $unit->title }}"
                                          class="w-full h-full object-cover">
                                 @endforeach
@@ -73,7 +73,7 @@
                                     <button @click="activeImage = {{ $index }}"
                                             :class="{ 'ring-2 ring-blue-500 ring-offset-2': activeImage === {{ $index }} }"
                                             class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition">
-                                        <img src="{{ $image->getUrl() }}" alt=""
+                                        <img src="{{ $image->getUrl('thumb') }}" alt=""
                                              class="w-full h-full object-cover">
                                     </button>
                                 @endforeach
@@ -147,7 +147,7 @@
                         {{ $typeLabels[$unit->type] ?? $unit->type }}
                     </span>
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $unit->title }}</h1>
-                    @if($unit->city || $unit->unitArea || $unit->location)
+                    @if($unit->city || $unit->unitArea)
                     <p class="text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                         <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -157,9 +157,12 @@
                             {{ $unit->unitArea->name }}, {{ $unit->city->name }}
                         @elseif($unit->city)
                             {{ $unit->city->name }}
-                        @else
-                            {{ $unit->location }}
                         @endif
+                    </p>
+                    @endif
+                    @if($unit->location)
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                        {{ $unit->location }}
                     </p>
                     @endif
                 </div>
@@ -285,8 +288,8 @@
 
                         <h1 class="hidden lg:block text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $unit->title }}</h1>
 
-                        @if($unit->city || $unit->unitArea || $unit->location)
-                        <p class="hidden lg:flex text-gray-500 dark:text-gray-400 items-center gap-1.5 mb-6">
+                        @if($unit->city || $unit->unitArea)
+                        <p class="hidden lg:flex text-gray-500 dark:text-gray-400 items-center gap-1.5 mb-2">
                             <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -295,28 +298,33 @@
                                 {{ $unit->unitArea->name }}, {{ $unit->city->name }}
                             @elseif($unit->city)
                                 {{ $unit->city->name }}
-                            @else
-                                {{ $unit->location }}
                             @endif
                         </p>
+                        @endif
+                        @if($unit->location)
+                        <p class="hidden lg:block text-gray-500 dark:text-gray-400 text-sm mb-6">
+                            {{ $unit->location }}
+                        </p>
+                        @elseif($unit->city || $unit->unitArea)
+                        <div class="hidden lg:block mb-4"></div>
                         @endif
 
                         <!-- Price -->
                         <div class="border-t border-gray-100 dark:border-gray-700 py-6">
                             @if($unit->type === 'rental' && $unit->rentalDetail)
                                 <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                                    {{ number_format($unit->rentalDetail->monthly_rent) }} {{ __('EGP') }}
+                                    {{ number_format($unit->rentalDetail->monthly_rent) }} {{ currency_symbol() }}
                                 </div>
                                 <div class="text-gray-500 dark:text-gray-400">{{ __('per month') }}</div>
                                 @if($unit->rentalDetail->insurance_amount)
                                     <div class="mt-3 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
                                         <span class="font-medium">{{ __('Insurance Amount') }}:</span>
-                                        <span class="text-blue-600 dark:text-blue-400 font-semibold">{{ number_format($unit->rentalDetail->insurance_amount) }} {{ __('EGP') }}</span>
+                                        <span class="text-blue-600 dark:text-blue-400 font-semibold">{{ number_format($unit->rentalDetail->insurance_amount) }} {{ currency_symbol() }}</span>
                                     </div>
                                 @endif
                             @elseif($unit->type === 'sale' && $unit->saleDetail)
                                 <div class="text-3xl font-bold text-green-600 dark:text-green-400">
-                                    {{ number_format($unit->saleDetail->sale_price) }} {{ __('EGP') }}
+                                    {{ number_format($unit->saleDetail->sale_price) }} {{ currency_symbol() }}
                                 </div>
                                 @if($unit->saleDetail->is_negotiable)
                                     <div class="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-1 mt-1">
@@ -328,12 +336,12 @@
                                 @endif
                             @elseif($unit->type === 'under_construction' && $unit->constructionDetail)
                                 <div class="text-3xl font-bold text-amber-600 dark:text-amber-400">
-                                    {{ number_format($unit->constructionDetail->total_price) }} {{ __('EGP') }}
+                                    {{ number_format($unit->constructionDetail->total_price) }} {{ currency_symbol() }}
                                 </div>
                                 @if($unit->constructionDetail->down_payment_amount)
                                     <div class="mt-3 text-sm text-gray-600 dark:text-gray-400 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
                                         <span class="font-medium">{{ __('Down Payment') }}:</span>
-                                        <span class="text-amber-600 dark:text-amber-400 font-semibold">{{ number_format($unit->constructionDetail->down_payment_amount) }} {{ __('EGP') }}</span>
+                                        <span class="text-amber-600 dark:text-amber-400 font-semibold">{{ number_format($unit->constructionDetail->down_payment_amount) }} {{ currency_symbol() }}</span>
                                         @if($unit->constructionDetail->down_payment_percentage)
                                             <span class="text-gray-500">({{ $unit->constructionDetail->down_payment_percentage }}%)</span>
                                         @endif
@@ -366,7 +374,7 @@
                                             <div class="font-semibold text-gray-900 dark:text-white">{{ $plan->duration_years }} {{ __('Years') }}</div>
                                         </div>
                                         <div class="text-end">
-                                            <div class="text-lg font-bold text-amber-600 dark:text-amber-400">{{ number_format($plan->monthly_installment) }} {{ __('EGP') }}</div>
+                                            <div class="text-lg font-bold text-amber-600 dark:text-amber-400">{{ number_format($plan->monthly_installment) }} {{ currency_symbol() }}</div>
                                             <div class="text-xs text-gray-500 dark:text-gray-400">{{ __('per month') }}</div>
                                         </div>
                                     </div>
@@ -435,7 +443,7 @@
                                         <form @submit.prevent="
                                             loading = true;
                                             errors = {};
-                                            fetch('{{ route('inquiries.store', $unit) }}', {
+                                            fetch('{{ route('units.inquiry', $unit) }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',

@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Translatable\HasTranslations;
 
 class Unit extends Model implements HasMedia
@@ -39,8 +41,34 @@ class Unit extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('images');
-        $this->addMediaCollection('videos');
+        $this->addMediaCollection('images')
+            ->useDisk('public');
+
+        $this->addMediaCollection('videos')
+            ->useDisk('public');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(150)
+            ->height(150)
+            ->sharpen(10)
+            ->nonQueued();
+
+        // 16:9 banner for main display (1920x1080)
+        $this->addMediaConversion('banner')
+            ->fit(Fit::Crop, 1920, 1080)
+            ->sharpen(5)
+            ->performOnCollections('images')
+            ->nonQueued();
+
+        // 16:9 card for listings (640x360)
+        $this->addMediaConversion('card')
+            ->fit(Fit::Crop, 640, 360)
+            ->sharpen(5)
+            ->performOnCollections('images')
+            ->nonQueued();
     }
 
     public function rentalDetail(): HasOne
@@ -82,6 +110,7 @@ class Unit extends Model implements HasMedia
         if ($this->city) {
             $parts[] = $this->city->name;
         }
+
         return implode(', ', $parts) ?: $this->location ?? '';
     }
 

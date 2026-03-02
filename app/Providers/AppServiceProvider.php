@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use Exception;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
             try {
                 $settings = Setting::getAllSettings();
                 $view->with('siteSettings', $settings);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $view->with('siteSettings', []);
             }
         });

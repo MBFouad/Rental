@@ -2,24 +2,38 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\InquiryResource\Pages;
+use App\Filament\Resources\InquiryResource\Pages\EditInquiry;
+use App\Filament\Resources\InquiryResource\Pages\ListInquiries;
+use App\Filament\Resources\InquiryResource\Pages\ViewInquiry;
 use App\Models\Inquiry;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 
 class InquiryResource extends Resource
 {
     protected static ?string $model = Inquiry::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-inbox';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-inbox';
 
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationBadgeTooltip = 'New inquiries';
+    protected static \Illuminate\Contracts\Support\Htmlable|string|null $navigationBadgeTooltip = 'New inquiries';
 
     public static function getNavigationLabel(): string
     {
@@ -39,6 +53,7 @@ class InquiryResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         $count = static::getModel()::where('status', 'new')->count();
+
         return $count > 0 ? (string) $count : null;
     }
 
@@ -47,42 +62,42 @@ class InquiryResource extends Resource
         return 'danger';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make(__('Contact Information'))
+        return $schema
+            ->components([
+                Section::make(__('Contact Information'))
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->label(__('Name'))
                             ->disabled(),
 
-                        Forms\Components\TextInput::make('phone')
+                        TextInput::make('phone')
                             ->label(__('Phone'))
                             ->disabled(),
 
-                        Forms\Components\TextInput::make('email')
+                        TextInput::make('email')
                             ->label(__('Email'))
                             ->disabled(),
 
-                        Forms\Components\Textarea::make('message')
+                        Textarea::make('message')
                             ->label(__('Message'))
                             ->disabled()
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make(__('Property'))
+                Section::make(__('Property'))
                     ->schema([
-                        Forms\Components\Select::make('unit_id')
+                        Select::make('unit_id')
                             ->label(__('Unit'))
                             ->relationship('unit', 'title')
                             ->disabled(),
                     ]),
 
-                Forms\Components\Section::make(__('Status & Notes'))
+                Section::make(__('Status & Notes'))
                     ->schema([
-                        Forms\Components\Select::make('status')
+                        Select::make('status')
                             ->label(__('Status'))
                             ->options([
                                 'new' => __('New'),
@@ -91,10 +106,10 @@ class InquiryResource extends Resource
                             ])
                             ->required(),
 
-                        Forms\Components\DateTimePicker::make('contacted_at')
+                        DateTimePicker::make('contacted_at')
                             ->label(__('Contacted At')),
 
-                        Forms\Components\Textarea::make('admin_notes')
+                        Textarea::make('admin_notes')
                             ->label(__('Admin Notes'))
                             ->rows(4)
                             ->columnSpanFull(),
@@ -107,34 +122,34 @@ class InquiryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('#')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('unit.title')
+                TextColumn::make('unit.title')
                     ->label(__('Unit'))
                     ->searchable()
                     ->limit(30)
                     ->url(fn ($record) => route('units.show', $record->unit->slug))
                     ->openUrlInNewTab(),
 
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label(__('Name'))
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->label(__('Phone'))
                     ->searchable()
                     ->copyable()
                     ->copyMessage(__('Phone number copied')),
 
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->label(__('Email'))
                     ->searchable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
@@ -150,14 +165,14 @@ class InquiryResource extends Resource
                         default => 'gray',
                     }),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(__('Received'))
                     ->dateTime()
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->label(__('Status'))
                     ->options([
                         'new' => __('New'),
@@ -165,8 +180,8 @@ class InquiryResource extends Resource
                         'closed' => __('Closed'),
                     ]),
             ])
-            ->actions([
-                Tables\Actions\Action::make('markContacted')
+            ->recordActions([
+                Action::make('markContacted')
                     ->label(__('Mark Contacted'))
                     ->icon('heroicon-o-phone')
                     ->color('warning')
@@ -183,7 +198,7 @@ class InquiryResource extends Resource
                     })
                     ->visible(fn (Inquiry $record) => $record->status === 'new'),
 
-                Tables\Actions\Action::make('markClosed')
+                Action::make('markClosed')
                     ->label(__('Close'))
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
@@ -197,13 +212,13 @@ class InquiryResource extends Resource
                     })
                     ->visible(fn (Inquiry $record) => $record->status !== 'closed'),
 
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('markContacted')
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    BulkAction::make('markContacted')
                         ->label(__('Mark as Contacted'))
                         ->icon('heroicon-o-phone')
                         ->requiresConfirmation()
@@ -217,7 +232,7 @@ class InquiryResource extends Resource
                                 ->success()
                                 ->send();
                         }),
-                    Tables\Actions\DeleteBulkAction::make(),
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -230,9 +245,9 @@ class InquiryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListInquiries::route('/'),
-            'view' => Pages\ViewInquiry::route('/{record}'),
-            'edit' => Pages\EditInquiry::route('/{record}/edit'),
+            'index' => ListInquiries::route('/'),
+            'view' => ViewInquiry::route('/{record}'),
+            'edit' => EditInquiry::route('/{record}/edit'),
         ];
     }
 }

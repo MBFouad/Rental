@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\NewInquiryMail;
-use App\Models\Inquiry;
 use App\Models\Setting;
 use App\Models\Unit;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Log;
 
 class InquiryController extends Controller
 {
@@ -27,8 +28,8 @@ class InquiryController extends Controller
         if ($adminEmail) {
             try {
                 Mail::to($adminEmail)->send(new NewInquiryMail($inquiry));
-            } catch (\Exception $e) {
-                \Log::error('Failed to send inquiry email: ' . $e->getMessage());
+            } catch (Exception $e) {
+                Log::error('Failed to send inquiry email: '.$e->getMessage());
             }
         }
 

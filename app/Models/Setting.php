@@ -17,18 +17,9 @@ class Setting extends Model
 
     public static function get(string $key, mixed $default = null): mixed
     {
-        $settings = Cache::rememberForever('settings', function () {
-            return static::all()->pluck('value', 'key')->toArray();
-        });
+        $settings = static::getAllSettings();
 
-        $value = $settings[$key] ?? $default;
-
-        $setting = static::where('key', $key)->first();
-        if ($setting && in_array($setting->type, ['array', 'json'])) {
-            return json_decode($value, true) ?? $default;
-        }
-
-        return $value;
+        return $settings[$key] ?? $default;
     }
 
     public static function set(string $key, mixed $value, string $type = 'string'): void
@@ -53,6 +44,7 @@ class Setting extends Model
         if (is_string($value)) {
             return json_decode($value, true) ?? $default;
         }
+
         return $default;
     }
 
@@ -61,9 +53,10 @@ class Setting extends Model
         return Cache::rememberForever('settings', function () {
             return static::all()->mapWithKeys(function ($setting) {
                 $value = $setting->value;
-                if (in_array($setting->type, ['array', 'json'])) {
+                if (in_array($setting->type, ['array', 'json']) && is_string($value)) {
                     $value = json_decode($value, true);
                 }
+
                 return [$setting->key => $value];
             })->toArray();
         });

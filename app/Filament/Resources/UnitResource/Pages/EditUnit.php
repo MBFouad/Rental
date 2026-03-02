@@ -3,12 +3,11 @@
 namespace App\Filament\Resources\UnitResource\Pages;
 
 use App\Filament\Resources\UnitResource;
-use App\Models\ConstructionDetail;
-use App\Models\RentalDetail;
-use App\Models\SaleDetail;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Resources\Pages\EditRecord\Concerns\Translatable;
+use LaraZeus\SpatieTranslatable\Actions\LocaleSwitcher;
+use LaraZeus\SpatieTranslatable\Resources\Pages\EditRecord\Concerns\Translatable;
 
 class EditUnit extends EditRecord
 {
@@ -19,9 +18,9 @@ class EditUnit extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\LocaleSwitcher::make(),
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            LocaleSwitcher::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 
