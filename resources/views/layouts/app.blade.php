@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if($metaDescription = setting('meta_description'))
+        <meta name="description" content="{{ is_array($metaDescription) ? ($metaDescription[app()->getLocale()] ?? '') : $metaDescription }}">
+    @endif
+    @if($googleVerification = setting('google_verification'))
+        <meta name="google-site-verification" content="{{ $googleVerification }}">
+    @endif
+    <link rel="sitemap" type="application/xml" href="{{ route('sitemap') }}">
     <title>{{ $title ?? __('Property Units') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>

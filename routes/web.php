@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,13 @@ Route::get('/units/{slug}', [UnitController::class, 'show'])->name('units.show')
 
 // Inquiries
 Route::post('/units/{unit}/inquiry', [InquiryController::class, 'store'])->name('units.inquiry');
+
+// Sitemap
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Robots.txt (dynamic)
+Route::get('/robots.txt', function () {
+    $content = "User-agent: *\nDisallow: /admin\nDisallow: /admin/*\n\nSitemap: ".route('sitemap');
+
+    return response($content, 200)->header('Content-Type', 'text/plain');
+});

@@ -7,6 +7,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -53,6 +54,9 @@ class ManageSettings extends Page implements HasForms
             'instagram_url' => Setting::get('instagram_url'),
             'twitter_url' => Setting::get('twitter_url'),
             'currency' => Setting::get('currency', 'EGP'),
+            'google_verification' => Setting::get('google_verification'),
+            'meta_description_ar' => Setting::get('meta_description')['ar'] ?? '',
+            'meta_description_en' => Setting::get('meta_description')['en'] ?? '',
         ]);
     }
 
@@ -164,6 +168,31 @@ class ManageSettings extends Page implements HasForms
                                     ]),
                             ]),
 
+                        Tab::make(__('SEO'))
+                            ->icon('heroicon-o-magnifying-glass')
+                            ->schema([
+                                Section::make(__('Google Search Console'))
+                                    ->schema([
+                                        TextInput::make('google_verification')
+                                            ->label(__('Google Verification Code'))
+                                            ->helperText(__('Enter the content value from the Google meta tag (e.g., "abc123xyz"). You can also verify via DNS TXT record in Cloudflare.'))
+                                            ->maxLength(255),
+                                    ]),
+
+                                Section::make(__('Meta Description'))
+                                    ->schema([
+                                        Textarea::make('meta_description_ar')
+                                            ->label(__('Meta Description (Arabic)'))
+                                            ->rows(3)
+                                            ->maxLength(160),
+
+                                        Textarea::make('meta_description_en')
+                                            ->label(__('Meta Description (English)'))
+                                            ->rows(3)
+                                            ->maxLength(160),
+                                    ]),
+                            ]),
+
                         Tab::make(__('Social Media'))
                             ->icon('heroicon-o-share')
                             ->schema([
@@ -227,6 +256,13 @@ class ManageSettings extends Page implements HasForms
 
         // Save currency
         Setting::set('currency', $data['currency']);
+
+        // Save SEO settings
+        Setting::set('google_verification', $data['google_verification']);
+        Setting::set('meta_description', [
+            'ar' => $data['meta_description_ar'],
+            'en' => $data['meta_description_en'],
+        ], 'json');
 
         Notification::make()
             ->title(__('Settings saved successfully'))
