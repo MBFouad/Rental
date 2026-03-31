@@ -26,6 +26,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\RawJs;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -167,12 +168,16 @@ class UnitResource extends Resource
                     ->schema([
                         TextInput::make('rentalDetail.monthly_rent')
                             ->label(__('Monthly Rent'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
                             ->numeric()
                             ->required()
                             ->prefix(currency_symbol()),
 
                         TextInput::make('rentalDetail.insurance_amount')
                             ->label(__('Insurance Amount'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
                             ->numeric()
                             ->prefix(currency_symbol()),
                     ])
@@ -184,6 +189,8 @@ class UnitResource extends Resource
                     ->schema([
                         TextInput::make('saleDetail.sale_price')
                             ->label(__('Sale Price'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
                             ->numeric()
                             ->required()
                             ->prefix(currency_symbol()),
@@ -200,12 +207,16 @@ class UnitResource extends Resource
                     ->schema([
                         TextInput::make('constructionDetail.total_price')
                             ->label(__('Total Price'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
                             ->numeric()
                             ->required()
                             ->prefix(currency_symbol()),
 
                         TextInput::make('constructionDetail.down_payment_amount')
                             ->label(__('Down Payment Amount'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
                             ->numeric()
                             ->prefix(currency_symbol()),
 
@@ -239,6 +250,8 @@ class UnitResource extends Resource
 
                                 TextInput::make('monthly_installment')
                                     ->label(__('Monthly Installment'))
+                                    ->mask(RawJs::make('$money($input)'))
+                                    ->stripCharacters(',')
                                     ->numeric()
                                     ->required()
                                     ->prefix(currency_symbol()),
