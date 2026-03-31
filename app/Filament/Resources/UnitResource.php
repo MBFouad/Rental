@@ -273,7 +273,8 @@ class UnitResource extends Resource
                             ->maxFiles(10)
                             ->image()
                             ->conversion('card')
-                            ->reorderable(),
+                            ->reorderable()
+                            ->appendFiles(),
 
                         SpatieMediaLibraryFileUpload::make('videos')
                             ->label(__('Videos'))
