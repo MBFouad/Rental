@@ -9,6 +9,8 @@ use App\Filament\Resources\UnitResource\Pages\ViewUnit;
 use App\Models\Area;
 use App\Models\City;
 use App\Models\Unit;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -21,6 +23,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -401,6 +404,38 @@ class UnitResource extends Resource
                     ->options(Area::pluck('name', 'id')),
             ])
             ->recordActions([
+                ActionGroup::make([
+                    Action::make('copyLink')
+                        ->label(__('Copy Link'))
+                        ->icon('heroicon-o-clipboard')
+                        ->color('gray')
+                        ->action(function (Unit $record): void {
+                            $url = route('units.show', $record->slug);
+                            Notification::make()
+                                ->title(__('Link copied!'))
+                                ->success()
+                                ->body($url)
+                                ->send();
+                        })
+                        ->extraAttributes(fn (Unit $record): array => [
+                            'x-on:click' => 'navigator.clipboard.writeText(\''.route('units.show', $record->slug).'\')',
+                        ]),
+                    Action::make('shareWhatsapp')
+                        ->label(__('WhatsApp'))
+                        ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                        ->color('success')
+                        ->url(fn (Unit $record): string => 'https://wa.me/?text='.urlencode(route('units.show', $record->slug)))
+                        ->openUrlInNewTab(),
+                    Action::make('shareFacebook')
+                        ->label(__('Facebook'))
+                        ->icon('heroicon-o-share')
+                        ->color('info')
+                        ->url(fn (Unit $record): string => 'https://www.facebook.com/sharer/sharer.php?u='.urlencode(route('units.show', $record->slug)))
+                        ->openUrlInNewTab(),
+                ])
+                    ->label(__('Share'))
+                    ->icon('heroicon-o-share')
+                    ->color('primary'),
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
