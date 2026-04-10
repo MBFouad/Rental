@@ -23,7 +23,6 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -409,17 +408,7 @@ class UnitResource extends Resource
                         ->label(__('Copy Link'))
                         ->icon('heroicon-o-clipboard')
                         ->color('gray')
-                        ->action(function (Unit $record): void {
-                            $url = route('units.show', $record->slug);
-                            Notification::make()
-                                ->title(__('Link copied!'))
-                                ->success()
-                                ->body($url)
-                                ->send();
-                        })
-                        ->extraAttributes(fn (Unit $record): array => [
-                            'x-on:click' => 'navigator.clipboard.writeText(\''.route('units.show', $record->slug).'\')',
-                        ]),
+                        ->actionJs(fn (Unit $record): string => "navigator.clipboard.writeText('".route('units.show', $record->slug)."'); new FilamentNotification().title('".__('Link copied!')."').success().send();"),
                     Action::make('shareWhatsapp')
                         ->label(__('WhatsApp'))
                         ->icon('heroicon-o-chat-bubble-left-ellipsis')

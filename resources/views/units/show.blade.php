@@ -22,13 +22,18 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- Image Gallery -->
                 <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm">
-                    @php $images = $unit->getMedia('images'); @endphp
-                    @if($images->count() > 0)
+                    @php
+                        $images = $unit->getMedia('images');
+                        $videos = $unit->getMedia('videos');
+                        $totalSlides = $images->count() + $videos->count();
+                    @endphp
+                    @if($totalSlides > 0)
                         <div x-data="{ activeImage: 0, fullscreen: false }" class="relative">
-                            <!-- Main Image -->
-                            <div class="aspect-[16/10] bg-gray-200 dark:bg-gray-700 relative cursor-pointer" @click="fullscreen = true">
+                            <!-- Main Slide -->
+                            <div class="aspect-[16/10] bg-gray-200 dark:bg-gray-700 relative cursor-pointer">
                                 @foreach($images as $index => $image)
                                     <img x-show="activeImage === {{ $index }}"
+                                         @click="fullscreen = true"
                                          x-transition:enter="transition ease-out duration-300"
                                          x-transition:enter-start="opacity-0"
                                          x-transition:enter-end="opacity-100"
@@ -37,29 +42,42 @@
                                          class="w-full h-full object-cover">
                                 @endforeach
 
+                                @foreach($videos as $vIndex => $video)
+                                    <div x-show="activeImage === {{ $images->count() + $vIndex }}"
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0"
+                                         x-transition:enter-end="opacity-100"
+                                         class="w-full h-full">
+                                        <video controls class="w-full h-full object-contain bg-black"
+                                               x-ref="video_{{ $vIndex }}">
+                                            <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
+                                        </video>
+                                    </div>
+                                @endforeach
+
                                 <!-- Navigation Arrows -->
-                                @if($images->count() > 1)
-                                <button @click.stop="activeImage = activeImage > 0 ? activeImage - 1 : {{ $images->count() - 1 }}"
-                                        class="absolute {{ app()->getLocale() === 'ar' ? 'right-4' : 'left-4' }} top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition">
+                                @if($totalSlides > 1)
+                                <button @click.stop="activeImage = activeImage > 0 ? activeImage - 1 : {{ $totalSlides - 1 }}"
+                                        class="absolute {{ app()->getLocale() === 'ar' ? 'right-4' : 'left-4' }} top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-10">
                                     <svg class="w-5 h-5 {{ app()->getLocale() === 'ar' ? '' : 'rotate-180' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </button>
-                                <button @click.stop="activeImage = activeImage < {{ $images->count() - 1 }} ? activeImage + 1 : 0"
-                                        class="absolute {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition">
+                                <button @click.stop="activeImage = activeImage < {{ $totalSlides - 1 }} ? activeImage + 1 : 0"
+                                        class="absolute {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition z-10">
                                     <svg class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </button>
                                 @endif
 
-                                <!-- Image Counter -->
-                                <div class="absolute bottom-4 {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} bg-black/60 text-white text-sm px-3 py-1.5 rounded-lg">
-                                    <span x-text="activeImage + 1"></span> / {{ $images->count() }}
+                                <!-- Slide Counter -->
+                                <div class="absolute bottom-4 {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} bg-black/60 text-white text-sm px-3 py-1.5 rounded-lg z-10">
+                                    <span x-text="activeImage + 1"></span> / {{ $totalSlides }}
                                 </div>
 
-                                <!-- Fullscreen Icon -->
-                                <div class="absolute bottom-4 {{ app()->getLocale() === 'ar' ? 'right-4' : 'left-4' }} bg-black/60 text-white text-sm px-3 py-1.5 rounded-lg flex items-center gap-1">
+                                <!-- Fullscreen Icon (only for images) -->
+                                <div x-show="activeImage < {{ $images->count() }}" class="absolute bottom-4 {{ app()->getLocale() === 'ar' ? 'right-4' : 'left-4' }} bg-black/60 text-white text-sm px-3 py-1.5 rounded-lg flex items-center gap-1 z-10" @click="fullscreen = true">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
                                     </svg>
@@ -67,7 +85,7 @@
                             </div>
 
                             <!-- Thumbnails -->
-                            @if($images->count() > 1)
+                            @if($totalSlides > 1)
                             <div class="flex gap-2 p-4 overflow-x-auto">
                                 @foreach($images as $index => $image)
                                     <button @click="activeImage = {{ $index }}"
@@ -75,6 +93,20 @@
                                             class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition">
                                         <img src="{{ $image->getUrl('thumb') }}" alt=""
                                              class="w-full h-full object-cover">
+                                    </button>
+                                @endforeach
+                                @foreach($videos as $vIndex => $video)
+                                    <button @click="activeImage = {{ $images->count() + $vIndex }}"
+                                            :class="{ 'ring-2 ring-blue-500 ring-offset-2': activeImage === {{ $images->count() + $vIndex }} }"
+                                            class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition relative bg-gray-900">
+                                        <div class="absolute inset-0 flex items-center justify-center z-10">
+                                            <svg class="w-8 h-8 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"></path>
+                                            </svg>
+                                        </div>
+                                        <svg class="w-8 h-8 text-gray-500 absolute inset-0 m-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
                                     </button>
                                 @endforeach
                             </div>
@@ -91,27 +123,34 @@
                                  class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
                                  @keydown.escape.window="fullscreen = false"
                                  x-cloak>
-                                <button @click="fullscreen = false" class="absolute top-4 {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} text-white hover:text-gray-300 transition">
+                                <button @click="fullscreen = false" class="absolute top-4 {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} text-white hover:text-gray-300 transition z-10">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
                                 </button>
-                                <div class="max-w-6xl max-h-[90vh] mx-4">
+                                <div class="max-w-6xl max-h-[90vh] mx-4 w-full">
                                     @foreach($images as $index => $image)
                                         <img x-show="activeImage === {{ $index }}"
                                              src="{{ $image->getUrl() }}"
                                              alt="{{ $unit->title }}"
-                                             class="max-w-full max-h-[90vh] object-contain">
+                                             class="max-w-full max-h-[90vh] object-contain mx-auto">
+                                    @endforeach
+                                    @foreach($videos as $vIndex => $video)
+                                        <div x-show="activeImage === {{ $images->count() + $vIndex }}" class="w-full flex items-center justify-center">
+                                            <video controls class="max-w-full max-h-[90vh]">
+                                                <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
+                                            </video>
+                                        </div>
                                     @endforeach
                                 </div>
-                                @if($images->count() > 1)
-                                <button @click="activeImage = activeImage > 0 ? activeImage - 1 : {{ $images->count() - 1 }}"
+                                @if($totalSlides > 1)
+                                <button @click="activeImage = activeImage > 0 ? activeImage - 1 : {{ $totalSlides - 1 }}"
                                         class="absolute {{ app()->getLocale() === 'ar' ? 'right-4' : 'left-4' }} top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition">
                                     <svg class="w-12 h-12 {{ app()->getLocale() === 'ar' ? '' : 'rotate-180' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </button>
-                                <button @click="activeImage = activeImage < {{ $images->count() - 1 }} ? activeImage + 1 : 0"
+                                <button @click="activeImage = activeImage < {{ $totalSlides - 1 }} ? activeImage + 1 : 0"
                                         class="absolute {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition">
                                     <svg class="w-12 h-12 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -236,25 +275,6 @@
                     </div>
                 </div>
 
-                <!-- Videos -->
-                @php $videos = $unit->getMedia('videos'); @endphp
-                @if($videos->count() > 0)
-                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                        </svg>
-                        {{ __('Videos') }}
-                    </h2>
-                    <div class="space-y-4">
-                        @foreach($videos as $video)
-                            <video controls class="w-full rounded-xl">
-                                <source src="{{ $video->getUrl() }}" type="{{ $video->mime_type }}">
-                            </video>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
             </div>
 
             <!-- Sidebar -->
