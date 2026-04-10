@@ -282,6 +282,7 @@ class UnitResource extends Resource
                             ->disk('public')
                             ->multiple()
                             ->maxFiles(3)
+                            ->maxSize(51200)
                             ->acceptedFileTypes(['video/mp4', 'video/webm']),
                     ]),
             ]);
