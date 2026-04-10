@@ -562,7 +562,7 @@
                             @endforeach
 
                             @foreach(setting_array('whatsapp_numbers') ?? [] as $whatsapp)
-                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $whatsapp) }}" target="_blank"
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $whatsapp) }}?text={{ urlencode(__('I am interested in this property') . ': ' . route('units.show', $unit->slug)) }}" target="_blank"
                                class="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition">
                                 <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                                     <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 24 24">
