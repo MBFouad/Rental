@@ -31,15 +31,15 @@ class CreateUnit extends CreateRecord
         if ($record->type === 'rental' && isset($data['rentalDetail'])) {
             RentalDetail::create([
                 'unit_id' => $record->id,
-                'monthly_rent' => $data['rentalDetail']['monthly_rent'],
-                'insurance_amount' => $data['rentalDetail']['insurance_amount'] ?? null,
+                'monthly_rent' => $this->cleanMoney($data['rentalDetail']['monthly_rent']),
+                'insurance_amount' => $this->cleanMoney($data['rentalDetail']['insurance_amount'] ?? null),
             ]);
         }
 
         if ($record->type === 'sale' && isset($data['saleDetail'])) {
             SaleDetail::create([
                 'unit_id' => $record->id,
-                'sale_price' => $data['saleDetail']['sale_price'],
+                'sale_price' => $this->cleanMoney($data['saleDetail']['sale_price']),
                 'is_negotiable' => $data['saleDetail']['is_negotiable'] ?? false,
             ]);
         }
@@ -47,8 +47,8 @@ class CreateUnit extends CreateRecord
         if ($record->type === 'under_construction' && isset($data['constructionDetail'])) {
             $constructionDetail = ConstructionDetail::create([
                 'unit_id' => $record->id,
-                'total_price' => $data['constructionDetail']['total_price'],
-                'down_payment_amount' => $data['constructionDetail']['down_payment_amount'] ?? null,
+                'total_price' => $this->cleanMoney($data['constructionDetail']['total_price']),
+                'down_payment_amount' => $this->cleanMoney($data['constructionDetail']['down_payment_amount'] ?? null),
                 'down_payment_percentage' => $data['constructionDetail']['down_payment_percentage'] ?? null,
                 'expected_completion' => $data['constructionDetail']['expected_completion'] ?? null,
             ]);
@@ -57,11 +57,20 @@ class CreateUnit extends CreateRecord
                 foreach ($data['constructionDetail']['paymentPlans'] as $plan) {
                     $constructionDetail->paymentPlans()->create([
                         'duration_years' => $plan['duration_years'],
-                        'monthly_installment' => $plan['monthly_installment'],
+                        'monthly_installment' => $this->cleanMoney($plan['monthly_installment']),
                     ]);
                 }
             }
         }
+    }
+
+    private function cleanMoney(mixed $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return str_replace(',', '', (string) $value);
     }
 
     protected function getRedirectUrl(): string
