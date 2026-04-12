@@ -298,7 +298,8 @@ class UnitResource extends Resource
                     ->label(__('Image'))
                     ->collection('images')
                     ->conversion('thumb')
-                    ->circular(),
+                    ->circular()
+                    ->limit(3),
 
                 TextColumn::make('title')
                     ->label(__('Title'))
@@ -320,6 +321,17 @@ class UnitResource extends Resource
                         'under_construction' => 'warning',
                         default => 'gray',
                     }),
+
+                TextColumn::make('price')
+                    ->label(__('Price'))
+                    ->state(fn (Unit $record): ?string => match ($record->type) {
+                        'rental' => $record->rentalDetail?->monthly_rent,
+                        'sale' => $record->saleDetail?->sale_price,
+                        'under_construction' => $record->constructionDetail?->total_price,
+                        default => null,
+                    })
+                    ->numeric()
+                    ->toggleable(),
 
                 TextColumn::make('status')
                     ->label(__('Status'))
