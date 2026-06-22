@@ -31,32 +31,30 @@
     <!-- Navigation -->
     <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between items-center min-h-16 py-2">
                 <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2">
-                        @if($websiteLogo)
-                            <img src="{{ $websiteLogo }}" alt="{{ $websiteName }}" class="h-10 w-auto">
-                        @endif
-                        <span class="text-xl font-bold text-blue-600 dark:text-blue-400">
+                    <a href="{{ route('home') }}" class="flex flex-col items-center gap-1 leading-none">
+                        <img src="{{ $websiteLogo ?: asset('images/logo.jpeg') }}" alt="{{ $websiteName }}" class="h-10 w-auto">
+                        <span class="text-sm font-bold text-brand-700 dark:text-brand-400">
                             {{ $websiteName }}
                         </span>
                     </a>
                 </div>
 
                 <div class="hidden md:flex items-center gap-1">
-                    <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md {{ request()->routeIs('home') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : '' }}">
+                    <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2 rounded-md {{ request()->routeIs('home') ? 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400' : '' }}">
                         {{ __('Home') }}
                     </a>
-                    <a href="{{ route('units.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md {{ request()->routeIs('units.index') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : '' }}">
+                    <a href="{{ route('units.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2 rounded-md {{ request()->routeIs('units.index') ? 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400' : '' }}">
                         {{ __('All Units') }}
                     </a>
-                    <a href="{{ route('units.rental') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md {{ request()->routeIs('units.rental') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : '' }}">
+                    <a href="{{ route('units.rental') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2 rounded-md {{ request()->routeIs('units.rental') ? 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400' : '' }}">
                         {{ __('Rental') }}
                     </a>
-                    <a href="{{ route('units.sale') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md {{ request()->routeIs('units.sale') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : '' }}">
+                    <a href="{{ route('units.sale') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2 rounded-md {{ request()->routeIs('units.sale') ? 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400' : '' }}">
                         {{ __('Sale') }}
                     </a>
-                    <a href="{{ route('units.construction') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md {{ request()->routeIs('units.construction') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : '' }}">
+                    <a href="{{ route('units.construction') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2 rounded-md {{ request()->routeIs('units.construction') ? 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400' : '' }}">
                         {{ __('Under Construction') }}
                     </a>
                 </div>
@@ -64,7 +62,7 @@
                 <div class="flex items-center gap-2">
                     <!-- Language Switcher -->
                     <a href="{{ route('locale.set', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
-                       class="px-3 py-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600">
+                       class="px-3 py-1.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600">
                         {{ app()->getLocale() === 'ar' ? 'EN' : 'AR' }}
                     </a>
 
@@ -93,10 +91,8 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Brand -->
                 <div class="md:col-span-1">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2 mb-4">
-                        @if($websiteLogo)
-                            <img src="{{ $websiteLogo }}" alt="{{ $websiteName }}" class="h-10 w-auto brightness-0 invert">
-                        @endif
+                    <a href="{{ route('home') }}" class="flex flex-col items-start gap-3 mb-4">
+                        <img src="{{ $websiteLogo ?: asset('images/logo.jpeg') }}" alt="{{ $websiteName }}" class="h-16 w-auto rounded-lg bg-white p-2">
                         <span class="text-xl font-bold text-white">{{ $websiteName }}</span>
                     </a>
                     <p class="text-gray-400 text-sm">{{ __('Find your perfect property') }}</p>
@@ -119,7 +115,7 @@
                     <ul class="space-y-3">
                         @foreach($phoneNumbers as $phone)
                             <li class="flex items-center gap-2 text-gray-400">
-                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                                 </svg>
                                 <a href="tel:{{ $phone }}" class="hover:text-white transition" dir="ltr">{{ $phone }}</a>
@@ -127,7 +123,7 @@
                         @endforeach
                         @foreach($emails as $email)
                             <li class="flex items-center gap-2 text-gray-400">
-                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                 </svg>
                                 <a href="mailto:{{ $email }}" class="hover:text-white transition">{{ $email }}</a>
@@ -149,7 +145,7 @@
                     <h3 class="text-lg font-semibold mb-4">{{ __('Follow Us') }}</h3>
                     <div class="flex gap-4">
                         @if($facebookUrl)
-                            <a href="{{ $facebookUrl }}" target="_blank" class="text-gray-400 hover:text-blue-500 transition">
+                            <a href="{{ $facebookUrl }}" target="_blank" class="text-gray-400 hover:text-brand-500 transition">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                                 </svg>
@@ -163,7 +159,7 @@
                             </a>
                         @endif
                         @if($twitterUrl)
-                            <a href="{{ $twitterUrl }}" target="_blank" class="text-gray-400 hover:text-blue-400 transition">
+                            <a href="{{ $twitterUrl }}" target="_blank" class="text-gray-400 hover:text-brand-400 transition">
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                                 </svg>

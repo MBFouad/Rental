@@ -26,25 +26,25 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="text-xl font-bold text-blue-600 dark:text-blue-400">
+                    <a href="{{ route('home') }}" class="text-xl font-bold text-brand-600 dark:text-brand-400">
                         {{ __('Property Units') }}
                     </a>
                 </div>
 
                 <div class="hidden md:flex items-center space-x-4 rtl:space-x-reverse">
-                    <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2">
+                    <a href="{{ route('home') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2">
                         {{ __('Home') }}
                     </a>
-                    <a href="{{ route('units.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2">
+                    <a href="{{ route('units.index') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2">
                         {{ __('All Units') }}
                     </a>
-                    <a href="{{ route('units.rental') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2">
+                    <a href="{{ route('units.rental') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2">
                         {{ __('Rental') }}
                     </a>
-                    <a href="{{ route('units.sale') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2">
+                    <a href="{{ route('units.sale') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2">
                         {{ __('Sale') }}
                     </a>
-                    <a href="{{ route('units.construction') }}" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2">
+                    <a href="{{ route('units.construction') }}" class="text-gray-700 dark:text-gray-200 hover:text-brand-600 dark:hover:text-brand-400 px-3 py-2">
                         {{ __('Under Construction') }}
                     </a>
                 </div>

@@ -1,11 +1,11 @@
 <x-layouts.app :title="$pageTitle ?? __('All Units')">
     <!-- Page Header -->
-    <div class="bg-gradient-to-r from-blue-600 to-blue-800 py-12">
+    <div class="bg-gradient-to-r from-brand-700 to-brand-900 py-12">
         <div class="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
                 {{ $pageTitle ?? __('All Units') }}
             </h1>
-            <p class="text-blue-100">
+            <p class="text-brand-100">
                 {{ __(':count properties found', ['count' => $units->total()]) }}
             </p>
         </div>
@@ -56,7 +56,7 @@
 
                         <div class="p-5 border-b border-gray-200 dark:border-gray-700">
                             <h2 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                                 </svg>
                                 {{ __('Filter Properties') }}
@@ -69,13 +69,13 @@
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Search') }}</label>
                                 <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
                                        placeholder="{{ __('Search by title, description...') }}"
-                                       class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                       class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                             </div>
 
                             <!-- Type -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Property Type') }}</label>
-                                <select name="type" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                <select name="type" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                     <option value="">{{ __('All Types') }}</option>
                                     <option value="rental" {{ ($filters['type'] ?? '') === 'rental' ? 'selected' : '' }}>{{ __('Rental') }}</option>
                                     <option value="sale" {{ ($filters['type'] ?? '') === 'sale' ? 'selected' : '' }}>{{ __('Sale') }}</option>
@@ -87,7 +87,7 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('City') }}</label>
                                 <select name="city_id" x-model="cityId"
-                                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                     <option value="">{{ __('All Cities') }}</option>
                                     @foreach($cities as $city)
                                         <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -99,7 +99,7 @@
                             <div x-show="areas.length > 0" x-cloak>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Area') }}</label>
                                 <select name="area_id"
-                                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                     <option value="">{{ __('All Areas') }}</option>
                                     <template x-for="area in areas" :key="area.id">
                                         <option :value="area.id" x-text="area.name" :selected="area.id == '{{ $filters['area_id'] ?? '' }}'"></option>
@@ -113,17 +113,17 @@
                                 <div class="grid grid-cols-2 gap-3">
                                     <input type="number" name="price_min" value="{{ $filters['price_min'] ?? '' }}"
                                            placeholder="{{ __('Min') }}"
-                                           class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                           class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                     <input type="number" name="price_max" value="{{ $filters['price_max'] ?? '' }}"
                                            placeholder="{{ __('Max') }}"
-                                           class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                           class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                 </div>
                             </div>
 
                             <!-- Bedrooms -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Bedrooms') }}</label>
-                                <select name="bedrooms" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                <select name="bedrooms" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                     <option value="">{{ __('Any') }}</option>
                                     @for($i = 1; $i <= 6; $i++)
                                         <option value="{{ $i }}" {{ ($filters['bedrooms'] ?? '') == $i ? 'selected' : '' }}>{{ $i }}+</option>
@@ -134,7 +134,7 @@
                             <!-- Bathrooms -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Bathrooms') }}</label>
-                                <select name="bathrooms" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                <select name="bathrooms" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
                                     <option value="">{{ __('Any') }}</option>
                                     @for($i = 1; $i <= 4; $i++)
                                         <option value="{{ $i }}" {{ ($filters['bathrooms'] ?? '') == $i ? 'selected' : '' }}>{{ $i }}+</option>
@@ -145,7 +145,7 @@
 
                         <!-- Filter Actions -->
                         <div class="p-5 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700 space-y-3">
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2">
+                            <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
@@ -168,12 +168,12 @@
                 @if(array_filter($filters))
                 <div class="mb-6 flex flex-wrap gap-2">
                     @if(!empty($filters['type']))
-                        <span class="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-3 py-1.5 rounded-full text-sm">
+                        <span class="inline-flex items-center gap-1 bg-brand-100 dark:bg-brand-900/30 text-brand-800 dark:text-brand-200 px-3 py-1.5 rounded-full text-sm">
                             @php
                                 $typeLabels = ['rental' => __('Rental'), 'sale' => __('Sale'), 'under_construction' => __('Under Construction')];
                             @endphp
                             {{ $typeLabels[$filters['type']] ?? $filters['type'] }}
-                            <a href="{{ request()->fullUrlWithQuery(['type' => null]) }}" class="hover:text-blue-600">
+                            <a href="{{ request()->fullUrlWithQuery(['type' => null]) }}" class="hover:text-brand-600">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
@@ -238,7 +238,7 @@
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ __('No units found') }}</h3>
                         <p class="text-gray-500 dark:text-gray-400 mb-6">{{ __('Try adjusting your filters to find what you\'re looking for.') }}</p>
-                        <a href="{{ route('units.index') }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                        <a href="{{ route('units.index') }}" class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3 rounded-lg transition">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                             </svg>

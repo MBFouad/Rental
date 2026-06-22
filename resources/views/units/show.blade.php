@@ -3,11 +3,11 @@
     <div class="bg-gray-100 dark:bg-gray-800 py-4">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center gap-2 text-sm">
-                <a href="{{ route('home') }}" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">{{ __('Home') }}</a>
+                <a href="{{ route('home') }}" class="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">{{ __('Home') }}</a>
                 <svg class="w-4 h-4 text-gray-400 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
-                <a href="{{ route('units.index') }}" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">{{ __('Properties') }}</a>
+                <a href="{{ route('units.index') }}" class="text-gray-500 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400">{{ __('Properties') }}</a>
                 <svg class="w-4 h-4 text-gray-400 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -89,7 +89,7 @@
                             <div class="flex gap-2 p-4 overflow-x-auto">
                                 @foreach($images as $index => $image)
                                     <button @click="activeImage = {{ $index }}"
-                                            :class="{ 'ring-2 ring-blue-500 ring-offset-2': activeImage === {{ $index }} }"
+                                            :class="{ 'ring-2 ring-brand-500 ring-offset-2': activeImage === {{ $index }} }"
                                             class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition">
                                         <img src="{{ $image->getUrl('thumb') }}" alt=""
                                              class="w-full h-full object-cover">
@@ -97,7 +97,7 @@
                                 @endforeach
                                 @foreach($videos as $vIndex => $video)
                                     <button @click="activeImage = {{ $images->count() + $vIndex }}"
-                                            :class="{ 'ring-2 ring-blue-500 ring-offset-2': activeImage === {{ $images->count() + $vIndex }} }"
+                                            :class="{ 'ring-2 ring-brand-500 ring-offset-2': activeImage === {{ $images->count() + $vIndex }} }"
                                             class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden transition relative bg-gray-900">
                                         <div class="absolute inset-0 flex items-center justify-center z-10">
                                             <svg class="w-8 h-8 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
@@ -172,7 +172,7 @@
                 <div class="lg:hidden bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
                     @php
                         $typeColors = [
-                            'rental' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200',
+                            'rental' => 'bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-200',
                             'sale' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200',
                             'under_construction' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
                         ];
@@ -188,7 +188,7 @@
                     <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ $unit->title }}</h1>
                     @if($unit->city || $unit->unitArea)
                     <p class="text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
-                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
@@ -209,7 +209,7 @@
                 <!-- Description -->
                 <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                         {{ __('Description') }}
@@ -222,7 +222,7 @@
                 <!-- Property Features -->
                 <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                         </svg>
                         {{ __('Property Features') }}
@@ -230,8 +230,8 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         @if($unit->bedrooms)
                         <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 text-center">
-                            <div class="w-12 h-12 mx-auto mb-3 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-12 h-12 mx-auto mb-3 bg-brand-100 dark:bg-brand-900/30 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                                 </svg>
                             </div>
@@ -286,7 +286,7 @@
                         <div class="hidden lg:block mb-4">
                             @php
                                 $typeColors = [
-                                    'rental' => 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200',
+                                    'rental' => 'bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-200',
                                     'sale' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200',
                                     'under_construction' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
                                 ];
@@ -310,7 +310,7 @@
 
                         @if($unit->city || $unit->unitArea)
                         <p class="hidden lg:flex text-gray-500 dark:text-gray-400 items-center gap-1.5 mb-2">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
@@ -332,14 +332,14 @@
                         <!-- Price -->
                         <div class="border-t border-gray-100 dark:border-gray-700 py-6">
                             @if($unit->type === 'rental' && $unit->rentalDetail)
-                                <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                <div class="text-3xl font-bold text-brand-600 dark:text-brand-400">
                                     {{ number_format($unit->rentalDetail->monthly_rent) }} {{ currency_symbol() }}
                                 </div>
                                 <div class="text-gray-500 dark:text-gray-400">{{ __('per month') }}</div>
                                 @if($unit->rentalDetail->insurance_amount)
                                     <div class="mt-3 text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3">
                                         <span class="font-medium">{{ __('Insurance Amount') }}:</span>
-                                        <span class="text-blue-600 dark:text-blue-400 font-semibold">{{ number_format($unit->rentalDetail->insurance_amount) }} {{ currency_symbol() }}</span>
+                                        <span class="text-brand-600 dark:text-brand-400 font-semibold">{{ number_format($unit->rentalDetail->insurance_amount) }} {{ currency_symbol() }}</span>
                                     </div>
                                 @endif
                             @elseif($unit->type === 'sale' && $unit->saleDetail)
@@ -406,7 +406,7 @@
                         <!-- I am Interested Button -->
                         <div x-data="{ showInquiryModal: false, submitted: false, loading: false, errors: {} }">
                             <button @click="showInquiryModal = true"
-                                    class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                                    class="w-full bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                                 </svg>
@@ -444,7 +444,7 @@
                                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">{{ __('Thank You!') }}</h3>
                                         <p class="text-gray-600 dark:text-gray-400 mb-6">{{ __('Your inquiry has been submitted successfully. We will contact you soon.') }}</p>
                                         <button @click="showInquiryModal = false; submitted = false"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                                                class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3 rounded-lg transition">
                                             {{ __('Close') }}
                                         </button>
                                     </div>
@@ -493,7 +493,7 @@
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Your Name') }} <span class="text-red-500">*</span></label>
                                                 <input type="text" x-ref="name" required
-                                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                                        :class="{ 'border-red-500': errors.name }"
                                                        placeholder="{{ __('Enter your name') }}">
                                                 <p x-show="errors.name" x-text="errors.name?.[0]" class="mt-1 text-sm text-red-500"></p>
@@ -502,7 +502,7 @@
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Phone Number') }} <span class="text-red-500">*</span></label>
                                                 <input type="tel" x-ref="phone" required
-                                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                                        :class="{ 'border-red-500': errors.phone }"
                                                        placeholder="{{ __('Enter your phone number') }}">
                                                 <p x-show="errors.phone" x-text="errors.phone?.[0]" class="mt-1 text-sm text-red-500"></p>
@@ -511,7 +511,7 @@
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Email') }} <span class="text-gray-400">({{ __('Optional') }})</span></label>
                                                 <input type="email" x-ref="email"
-                                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                                        :class="{ 'border-red-500': errors.email }"
                                                        placeholder="{{ __('Enter your email') }}">
                                                 <p x-show="errors.email" x-text="errors.email?.[0]" class="mt-1 text-sm text-red-500"></p>
@@ -520,13 +520,13 @@
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('Message') }} <span class="text-gray-400">({{ __('Optional') }})</span></label>
                                                 <textarea x-ref="message" rows="3"
-                                                          class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
+                                                          class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
                                                           placeholder="{{ __('Write your message here...') }}"></textarea>
                                             </div>
 
                                             <button type="submit"
                                                     :disabled="loading"
-                                                    class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-2">
+                                                    class="w-full bg-brand-600 hover:bg-brand-700 disabled:bg-brand-400 text-white font-bold py-4 rounded-lg transition flex items-center justify-center gap-2">
                                                 <svg x-show="loading" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
                                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -544,16 +544,16 @@
                     @if(setting_array('phone_numbers') || setting_array('whatsapp_numbers'))
                     <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
                         <h3 class="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                             </svg>
                             {{ __('Contact Us') }}
                         </h3>
                         <div class="space-y-3">
                             @foreach(setting_array('phone_numbers') ?? [] as $phone)
-                            <a href="tel:{{ $phone }}" class="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition">
-                                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <a href="tel:{{ $phone }}" class="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition">
+                                <div class="w-10 h-10 bg-brand-100 dark:bg-brand-900/30 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                                     </svg>
                                 </div>

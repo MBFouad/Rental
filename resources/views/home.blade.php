@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('Home')">
     <!-- Hero Section with Search -->
-    <section class="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white py-24 overflow-hidden">
+    <section class="relative bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950 text-white py-24 overflow-hidden">
         <div class="absolute inset-0 bg-black/20"></div>
         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
 
@@ -9,7 +9,7 @@
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
                     {{ __('Find Your Dream Property') }}
                 </h1>
-                <p class="text-xl text-blue-100 max-w-2xl mx-auto">
+                <p class="text-xl text-brand-100 max-w-2xl mx-auto">
                     {{ __('Discover the best rental, sale, and under-construction properties in Egypt') }}
                 </p>
             </div>
@@ -22,13 +22,13 @@
                         <div class="lg:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Search') }}</label>
                             <input type="text" name="search" placeholder="{{ __('Search by title, description...') }}"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-gray-900">
                         </div>
 
                         <!-- Type Select -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('Type') }}</label>
-                            <select name="type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            <select name="type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-gray-900">
                                 <option value="">{{ __('All Types') }}</option>
                                 <option value="rental">{{ __('Rental') }}</option>
                                 <option value="sale">{{ __('Sale') }}</option>
@@ -46,7 +46,7 @@
                             }
                         })">
                             <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('City') }}</label>
-                            <select name="city_id" x-model="cityId" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            <select name="city_id" x-model="cityId" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-gray-900">
                                 <option value="">{{ __('All Cities') }}</option>
                                 @foreach(\App\Models\City::active()->ordered()->get() as $city)
                                     <option value="{{ $city->id }}">{{ $city->name }}</option>
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="flex justify-center">
-                        <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-2">
+                        <button type="submit" class="px-8 py-3 bg-brand-600 text-white rounded-lg font-semibold hover:bg-brand-700 transition flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
@@ -79,8 +79,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Rental Card -->
                 <a href="{{ route('units.rental') }}" class="group bg-white dark:bg-gray-700 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-600">
-                    <div class="w-16 h-16 mx-auto mb-6 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-16 h-16 mx-auto mb-6 bg-brand-100 dark:bg-brand-900/30 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-brand-600 dark:text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                         </svg>
                     </div>
@@ -122,7 +122,7 @@
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white">{{ __('Featured Properties') }}</h2>
                     <p class="text-gray-600 dark:text-gray-400 mt-2">{{ __('Handpicked properties for you') }}</p>
                 </div>
-                <a href="{{ route('units.index') }}" class="hidden md:inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium">
+                <a href="{{ route('units.index') }}" class="hidden md:inline-flex items-center gap-2 text-brand-600 dark:text-brand-400 hover:text-brand-700 font-medium">
                     {{ __('View All') }}
                     <svg class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -137,7 +137,7 @@
             </div>
 
             <div class="text-center mt-12 md:hidden">
-                <a href="{{ route('units.index') }}" class="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                <a href="{{ route('units.index') }}" class="inline-flex items-center gap-2 bg-brand-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-700 transition">
                     {{ __('Browse All Properties') }}
                     <svg class="w-5 h-5 {{ app()->getLocale() === 'ar' ? 'rotate-180' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
@@ -149,11 +149,11 @@
     @endif
 
     <!-- CTA Section -->
-    <section class="py-16 bg-blue-600 dark:bg-blue-800">
+    <section class="py-16 bg-gradient-to-br from-brand-700 to-brand-900 dark:from-brand-800 dark:to-brand-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-bold text-white mb-4">{{ __('Ready to Find Your Perfect Property?') }}</h2>
-            <p class="text-blue-100 mb-8 max-w-2xl mx-auto">{{ __('Browse our extensive collection of properties and find the one that matches your needs.') }}</p>
-            <a href="{{ route('units.index') }}" class="inline-block bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-blue-50 transition shadow-lg">
+            <p class="text-brand-100 mb-8 max-w-2xl mx-auto">{{ __('Browse our extensive collection of properties and find the one that matches your needs.') }}</p>
+            <a href="{{ route('units.index') }}" class="inline-block bg-white text-brand-700 px-8 py-4 rounded-lg font-bold hover:bg-brand-50 transition shadow-lg">
                 {{ __('Start Browsing') }}
             </a>
         </div>

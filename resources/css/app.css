@@ -10,4 +10,17 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Brand palette — forest green, anchored to the company logo (#09301D) */
+    --color-brand-50: #f2f8f5;
+    --color-brand-100: #e0f0e9;
+    --color-brand-200: #bedfd0;
+    --color-brand-300: #92c9af;
+    --color-brand-400: #5bb98d;
+    --color-brand-500: #3aa171;
+    --color-brand-600: #2a845a;
+    --color-brand-700: #1f6b47;
+    --color-brand-800: #165538;
+    --color-brand-900: #10412a;
+    --color-brand-950: #09301d;
 }
